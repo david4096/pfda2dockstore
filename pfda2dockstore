@@ -54,7 +54,7 @@ def main():
     setup_github_repo_and_tags(args.gh_token, args.gh_org, args.app_name, app_version, yaml.dump(cwl), dockerfile)
 
     # TODO: replace this with the code from Ola and Geet that pushes to Quay.io
-    docker_push(docker_tag)
+    docker_push(docker_tag, "quay.io", args.q_org, args.q_token)
 
     # TODO: this needs to still be done, see the google doc for endpoint swagger link
     # register_on_dockstore()
@@ -197,7 +197,24 @@ def docker_build(tag, dockerfile):
     p.communicate(dockerfile.encode('utf-8'))
     return p.returncode == 0
 
-def docker_push(tag):
-    subprocess.check_call(["sudo", "docker", "push", tag])
-
+def docker_push(tag, hub, username, token):
+    '''
+    Push a tagged image to a specified hub.
+    :param tag: Image tag
+    :type tag: string
+    :param hub: Name of a docker image hub (repository), e.g. "quay.io"
+    :type hub: string
+    :param username: username (for a quay.io robot account it's username+accountname)
+    :type username: string
+    :param token: token
+    :type token: string
+    '''
+    username_str = "-u={}".format(username)
+    token_str= "-p={}".format(token)
+    try:
+        subprocess.check_call(["sudo", "docker", "login", username_str, token_str, hub])
+        subprocess.check_call(["sudo", "docker", "push", tag])
+        subprocess.check_call(["sudo", "docker", "logout"])
+    except subprocess.CalledProcessError as e:
+        raise Exception("Failed to push image {} to {}/{}.\n{}".format(tag, hub, username, e))
 main()
