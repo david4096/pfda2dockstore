@@ -17,6 +17,7 @@ def main():
     parser.add_argument('--github-org', dest='gh_org', help='the github organization to make repositories in')
     parser.add_argument('--quay-token', dest='q_token', help='your Quay.io token')
     parser.add_argument('--quay-org', dest='q_org', help='the Quay.io organization to make repositories in')
+    parser.add_argument('--quay-account', dest='q_account', help='the Quay.io account (eg. robot account) to make repositories in')
     # FIXME: currently it just takes the most recent version
     #parser.add_argument('--app-version', dest='app_version', type=str, help="precisionFDA app version")
     parser.add_argument('--app-name', dest='app_name', type=str, help="precisionFDA app name")
@@ -59,7 +60,7 @@ def main():
 
     # TODO: replace this with the code from Ola and Geet that pushes to Quay.io
     print("Pushing {} to quay.io".format(docker_tag))
-    docker_push(docker_tag, "quay.io", args.q_org, args.q_token)
+    docker_push(docker_tag, "quay.io", args.q_org, args.q_account, args.q_token)
 
     # TODO: this needs to still be done, see the google doc for endpoint swagger link
     # register_on_dockstore()
@@ -202,24 +203,31 @@ def docker_build(tag, dockerfile):
     p.communicate(dockerfile.encode('utf-8'))
     return p.returncode == 0
 
-def docker_push(tag, hub, username, token):
+def docker_push(tag, hub, orgname, accountname, token):
     '''
     Push a tagged image to a specified hub.
     :param tag: Image tag
     :type tag: string
     :param hub: Name of a docker image hub (repository), e.g. "quay.io"
     :type hub: string
-    :param username: username (for a quay.io robot account it's username+accountname)
-    :type username: string
+    :param orgname: orgname
+    :type orgname: string
+    :param accountname: accountname (for a quay.io robot account the username is orgname+accountname)
+    :type accountname: string
     :param token: token
     :type token: string
     '''
-    username_str = "-u={}".format(username)
+    username_str = "-u={}".format(orgname)
+    if accountname:
+        username_str += "+" + accountname
     token_str= "-p={}".format(token)
     try:
-        subprocess.check_call(["docker", "login", username_str, token_str, hub])
-        subprocess.check_call(["docker", "push", tag])
+        cmd = ["docker", "login", username_str, token_str, hub]
+        subprocess.check_call(cmd)
+        cmd = ["docker", "push", tag]
+        subprocess.check_call(cmd)
+        print("Successfully pushed {} to {}/{}.\n{}".format(tag, hub, orgname))
         subprocess.check_call(["docker", "logout"])
     except subprocess.CalledProcessError as e:
-        raise Exception("Failed to push image {} to {}/{}.\n{}".format(tag, hub, username, e))
+        raise Exception("Failed to push image {} to {}/{}.\n{}".format(tag, hub, orgname, e))
 main()
