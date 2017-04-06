@@ -36,7 +36,7 @@ def main():
     # the app revision
     app_version = app["revision"]
     # the docker path on quay
-    docker_tag = args.q_org + "/" + args.app_name + ":" + app_version
+    docker_tag = "quay.io/" + args.q_org + "/" + args.app_name + ":" + str(app_version)
 
     # make the CWL
     cwl = pfda_app_to_cwl(app, docker_tag)
@@ -82,24 +82,26 @@ def setup_github_repo_and_tags(token, org, tool, app_version, cwl_file, dockerfi
             print (" + creating file:" + file_path)
             repo.create_file(file_path, "initial commit", str(data))
         # some cruft here because the first github library I used did the following, can't use this library because of the bug below
-        since = datetime.now() - timedelta(days=1)
-        commits = repo.get_commits(since=since)
-        last = commits[0]
-        print (last.sha)
+        #since = datetime.now() - timedelta(days=1)
+        #commits = repo.get_commits(since=since)
+        #last = commits[0]
+        #print (last.sha)
         # doesn't work according to this bug report!  https://github.com/PyGithub/PyGithub/issues/488
         #repo.create_git_tag(tag, 'the tag message', last.sha, 'commit')
         # try a different way for now
         data = {
-          "tag_name": app_version,
+          "tag_name": str(app_version),
           "target_commitish": "master",
-          "name": app_version,
-          "body": "the "+app_version+" release",
+          "name": str(app_version),
+          "body": "the "+str(app_version)+" release",
           "draft": False,
           "prerelease": False
         }
-        url = "https://api.github.com/repos/"+args.org+"/"+args.tool+"/releases"
-        print("the URL: "+url)
-        ag.repos[args.org][args.tool].releases.post(body=data)
+        #print (str(data))
+        url = "https://api.github.com/repos/"+org+"/"+tool+"/releases"
+        #print("the URL: "+url)
+        #headers = {'Authorization': 'token '+args.token}
+        ag.repos[org][tool].releases.post(body=data)
 
     except:
         e = sys.exc_info()[0]
@@ -193,11 +195,11 @@ def pfda_app_to_cwl(app, docker_pull):
     return cwl
 
 def docker_build(tag, dockerfile):
-    p = subprocess.Popen(["sudo", "docker", "build", "-t", tag, "-"], stdin=subprocess.PIPE)
+    p = subprocess.Popen(["docker", "build", "-t", tag, "-"], stdin=subprocess.PIPE)
     p.communicate(dockerfile.encode('utf-8'))
     return p.returncode == 0
 
 def docker_push(tag):
-    subprocess.check_call(["sudo", "docker", "push", tag])
+    subprocess.check_call(["docker", "push", tag])
 
 main()

@@ -1,5 +1,7 @@
 #gitpython
 #http://gitpython.readthedocs.io/en/stable/tutorial.html
+# ABOUT:
+# this has been merged into pfda2dockstore but I'm leaving this here as a standalone script to create repos on Github and tag them
 
 from github import Github
 from agithub.GitHub import GitHub
@@ -18,6 +20,7 @@ parser.add_argument('--tag', action='append', dest='tag', help='the tags to appl
 
 args = parser.parse_args()
 
+# it's unfortunate but I'm using two libraries here since the preferred library doesn't handle tagging correctly
 #g = Github("github handle", "password") #OR
 g = Github(args.token)
 ag = GitHub(token=args.token)
@@ -60,7 +63,7 @@ try:
         url = "https://api.github.com/repos/"+args.org+"/"+args.tool+"/releases"
         print("the URL: "+url)
         headers = {'Authorization': 'token '+args.token}
-        ag.repos[args.org][args.tool].releases.post(body=data)
+        ag.repos[args.org][args.tool].releases.post(body=data, header=headers)
 
 except:
     e = sys.exc_info()[0]
