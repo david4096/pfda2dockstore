@@ -28,6 +28,9 @@ Actions:
 
 Need to add this code, Ola is working on this.
 
-----
+## TODO
 
-Inputs: Github Token, Quay.io token, reponame, list of files
+* Push to existing github/quay.io repos with new versions needs to be supported
+* Better error handling
+* Finish integration with Geet's Dockstore registration piece
+* confirm tag/versions are handled correctly
