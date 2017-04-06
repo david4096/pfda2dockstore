@@ -217,9 +217,9 @@ def docker_push(tag, hub, username, token):
     username_str = "-u={}".format(username)
     token_str= "-p={}".format(token)
     try:
-        subprocess.check_call(["sudo", "docker", "login", username_str, token_str, hub])
-        subprocess.check_call(["sudo", "docker", "push", tag])
-        subprocess.check_call(["sudo", "docker", "logout"])
+        subprocess.check_call(["docker", "login", username_str, token_str, hub])
+        subprocess.check_call(["docker", "push", tag])
+        subprocess.check_call(["docker", "logout"])
     except subprocess.CalledProcessError as e:
         raise Exception("Failed to push image {} to {}/{}.\n{}".format(tag, hub, username, e))
 main()
