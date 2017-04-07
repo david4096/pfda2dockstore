@@ -17,6 +17,8 @@ def main():
     parser.add_argument('--github-org', dest='gh_org', help='the github organization to make repositories in')
     parser.add_argument('--quay-token', dest='q_token', help='your Quay.io token')
     parser.add_argument('--quay-org', dest='q_org', help='the Quay.io organization to make repositories in')
+    parser.add_argument('--dockstore-org', dist='ds_org', help='The Dockstore organization to make repositories in')
+    parser.add_argument('--dockstore-token', dist='ds_token', help='Your Dockstore token')
     # FIXME: currently it just takes the most recent version
     #parser.add_argument('--app-version', dest='app_version', type=str, help="precisionFDA app version")
     parser.add_argument('--app-name', dest='app_name', type=str, help="precisionFDA app name")
@@ -57,8 +59,19 @@ def main():
     docker_push(docker_tag)
 
     # TODO: this needs to still be done, see the google doc for endpoint swagger link
-    # register_on_dockstore()
+    register_on_dockstore(args.app_name, args.gh_org)
 
+
+def register_on_dockstore(repo_name, org):
+    dockstore_headers={
+        'Authorization': 'Bearer {}'.format(args.dockstore_token),
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/json'
+    }
+
+    dockstore_data='{"mode":"MANUAL_IMAGE_PATH","name":"{repo_name}","toolname":"{repo_name}","namespace":"{org}","registry":"QUAY_IO","gitUrl":"https://github.com/{org}/{repo_name}","default_dockerfile_path":"/Dockerfile","default_cwl_path":"/Dockstore.cwl","default_wdl_path":"/Dockstore.wdl","default_cwl_test_parameter_file":"/test.cwl.json","default_wdl_test_parameter_file":"/test.wdl.json","is_published":false}'
+
+    response = requests.post(args.dockstore_url, data=dockstore_data, headers=dockstore_headers, allow_redirects=True)
 
 # sets up Git repo, adds files, tags
 def setup_github_repo_and_tags(token, org, tool, app_version, cwl_file, dockerfile):
@@ -136,7 +149,6 @@ def pfda_app_to_cwl(app, docker_pull):
         "id": app["name"],
         "label": app["title"],
         "cwlVersion": "v1.0",
-        #"description": app["readme"],
         "baseCommand": [],
         "requirements": [{
             "class": "DockerRequirement",
