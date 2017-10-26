@@ -44,6 +44,13 @@ def main():
     # docker_tag = "quay.io/" + args.q_org + "/" + args.app_name + ":" + str(app_version)
     docker_tag = args.q_org + "/" + args.app_name + ":" + str(app_version)
 
+    # Add org and user (need a separate "describe" call to get authorship) Example: 
+    # app_desc["org"]: {'handle': 'bestgenetics', 'name': 'Best Genetics, Inc.'}
+    # app_desc["user"]: {'dxuser': 'jdoe', 'full_name': 'John Doe'}
+    app_desc = describe_app(args.pfda_token, app)
+    app["org"] = app_desc.get("org")
+    app["user"] = app_desc.get("user")
+
     # make the CWL
     cwl = pfda_app_to_cwl(app, docker_tag)
     with open("/tmp/Dockstore.cwl", 'w') as outfile:
@@ -144,6 +151,10 @@ def setup_github_repo_and_tags(token, org, tool, app_version, cwl_file, dockerfi
 def resolve_pfda_app_name(token, app_name):
     list_of_apps = pfda_api(token, "/list_apps")
     return [app for app in list_of_apps if app["name"] == app_name]
+
+def describe_app(token, app_json):
+    app_desc = pfda_api(token, "/describe", {"uid": app_json["uid"], "describe": {"include": {"user": True, "org": True}}})
+    return app_desc
 
 def pfda_export_app_dockerfile(token, app_uid):
     return pfda_api(token, "/export_app", {"id": app_uid})["content"]
