@@ -9,7 +9,8 @@ For example, to export [vcf-comparison](https://precision.fda.gov/apps/app-BqB9X
     conda create -n pfda python=3.5 anaconda
     source activate pfda
     pip install PyGithub agithub
-    docker login -u="<USERNAME>" -p="<ENCRYPTED_PASSWORD>" quay.io
+    # alternatively, you can call run.sh or the two commands below
+    docker login 
     python pfda2dockstore -p $PRECISION_FDA_TOKEN --github-token $GITHUB_TOKEN --github-org pfda2dockstore --quay-token $QUAY_TOKEN --quay-org $QUAY_ORG --app-name vcf-comparison
 
 The `QUAY_TOKEN` now seems replaced by robots in Quay.io
