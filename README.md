@@ -12,6 +12,8 @@ For example, to export [vcf-comparison](https://precision.fda.gov/apps/app-BqB9X
     docker login -u="<USERNAME>" -p="<ENCRYPTED_PASSWORD>" quay.io
     python pfda2dockstore -p $PRECISION_FDA_TOKEN --github-token $GITHUB_TOKEN --github-org pfda2dockstore --quay-token $QUAY_TOKEN --quay-org $QUAY_ORG --app-name vcf-comparison
 
+The `QUAY_TOKEN` now seems replaced by robots in Quay.io
+
 ## Accessory Script - GitHub Repo Creation
 
 This script (`createrepo.py`) takes your Github token and an organization name and creates a repository in it with a given CWL and Dockerfile.  I had to use two libraries here because PyGithub has a bug when creating a release.
