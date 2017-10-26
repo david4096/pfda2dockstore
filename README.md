@@ -2,6 +2,11 @@
 
 Export precisionFDA apps to Dockstore
 
+Be sure to set these variables in your environment:
+
+* PFDA_TOKEN
+* GITHUB_TOKEN
+
 ## Main Script - pfda2dockstore
 
 For example, to export [vcf-comparison](https://precision.fda.gov/apps/app-BqB9XZ8006ZZ2g5KzGXP3fpq) and save it in Github at [pfda2dockstore](https://github.com/pfda2dockstore) and Quay.io organization [pfda2dockstore](https://quay.io/organization/pfda2dockstore):
@@ -23,8 +28,9 @@ This script (`createrepo.py`) takes your Github token and an organization name a
 
     python createrepo.py --token $GITHUB_TOKEN --org pfda2dockstore --tool test5 --tag 1.0.0
 
-This will create a test5 repo in Github under the pfda2dockstore organization.  
+This will create a test5 repo in Github under the pfda2dockstore organization.
 
 ----
+
 
 Inputs: Github Token, Quay.io token, reponame, list of files

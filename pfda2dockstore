@@ -146,6 +146,7 @@ def setup_github_repo_and_tags(token, org, tool, app_version, cwl_file, dockerfi
     except:
         e = sys.exc_info()[0]
         print("errors creating repo, check to ensure this is not a duplicate: "+str(e))
+        sys.exit(1)
 
 # app name -> [app json]
 def resolve_pfda_app_name(token, app_name):
@@ -262,8 +263,8 @@ def docker_push(tag, hub, orgname, accountname, token):
     token_str= "-p={}".format(token)
     try:
         # cmd = ["docker", "login", '-u="{}+{}"'.format(orgname, accountname), '-p="{}"'.format(token), "quay.io"]
-        cmd = ["docker", "login", '-u="{}"'.format(accountname), '-p="{}"'.format(token)]
-        subprocess.check_call(cmd, shell=True)
+        #cmd = ["docker", "login", '-u="{}"'.format(accountname), '-p="{}"'.format(token)]
+        #subprocess.check_call(cmd, shell=True)
         cmd = ["docker", "push", tag]
         subprocess.check_call(cmd)
         subprocess.check_call(["docker", "logout"])
