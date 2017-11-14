@@ -4,8 +4,9 @@ Export precisionFDA apps to Dockstore
 
 Be sure to set these variables in your environment:
 
-* PFDA_TOKEN
+* PFDA_TOKEN (your PrecisionFDA token)
 * GITHUB_TOKEN
+* DS_TOKEN (your Dockstore token)
 
 ## Main Script - pfda2dockstore
 
@@ -15,7 +16,7 @@ For example, to export [vcf-comparison](https://precision.fda.gov/apps/app-BqB9X
     source activate pfda
     pip install PyGithub agithub
     # alternatively, you can call run.sh or the two commands below
-    docker login 
+    docker login
     python pfda2dockstore -p $PFDA_TOKEN --github-token $GITHUB_TOKEN --github-org pfda2dockstore --app-name vcf-comparison
 
 ## Accessory Script - GitHub Repo Creation
