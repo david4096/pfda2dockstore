@@ -16,9 +16,7 @@ For example, to export [vcf-comparison](https://precision.fda.gov/apps/app-BqB9X
     pip install PyGithub agithub
     # alternatively, you can call run.sh or the two commands below
     docker login 
-    python pfda2dockstore -p $PRECISION_FDA_TOKEN --github-token $GITHUB_TOKEN --github-org pfda2dockstore --quay-token $QUAY_TOKEN --quay-org $QUAY_ORG --app-name vcf-comparison
-
-The `QUAY_TOKEN` now seems replaced by robots in Quay.io
+    python pfda2dockstore -p $PFDA_TOKEN --github-token $GITHUB_TOKEN --github-org pfda2dockstore --app-name vcf-comparison
 
 ## Accessory Script - GitHub Repo Creation
 
