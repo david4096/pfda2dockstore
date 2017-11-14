@@ -68,7 +68,8 @@ def main():
 
     # TODO: replace this with the code from Ola and Geet that pushes to Quay.io
     #print("Pushing {} to quay.io".format(docker_tag))
-    docker_push(docker_tag, "quay.io", args.d_org, args.q_account, args.q_token)
+    #docker_push(docker_tag, "ignored_for_now", args.d_org, args.q_account, args.q_token)
+    docker_push(docker_tag, "ignored_for_now", args.d_org, "ignore_for_now", "ignore_for_now")
 
     # TODO: this needs to still be done, see the google doc for endpoint swagger link
     #register_on_dockstore(args.app_name, args.ds_org, args.ds_token)
@@ -266,6 +267,7 @@ def docker_push(tag, hub, orgname, accountname, token):
         # cmd = ["docker", "login", '-u="{}+{}"'.format(orgname, accountname), '-p="{}"'.format(token), "quay.io"]
         #cmd = ["docker", "login", '-u="{}"'.format(accountname), '-p="{}"'.format(token)]
         #subprocess.check_call(cmd, shell=True)
+        # TODO: fix me, this ignores "hub" since we're using DockerHub...
         cmd = ["docker", "push", tag]
         subprocess.check_call(cmd)
         subprocess.check_call(["docker", "logout"])
