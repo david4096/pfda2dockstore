@@ -9,7 +9,7 @@ Be sure to set these variables in your environment:
 
 ## Main Script - pfda2dockstore
 
-For example, to export [vcf-comparison](https://precision.fda.gov/apps/app-BqB9XZ8006ZZ2g5KzGXP3fpq) and save it in Github at [pfda2dockstore](https://github.com/pfda2dockstore) and Quay.io organization [pfda2dockstore](https://quay.io/organization/pfda2dockstore):
+For example, to export [vcf-comparison](https://precision.fda.gov/apps/app-BqB9XZ8006ZZ2g5KzGXP3fpq) and save it in Github at [pfda2dockstore](https://github.com/pfda2dockstore) and DockerHub organization [pfda2dockstore](https://hub.docker.com/u/pfda2dockstore):
 
     conda create -n pfda python=3.5 anaconda
     source activate pfda
