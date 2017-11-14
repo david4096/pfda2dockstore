@@ -1,19 +1,22 @@
 #!/usr/bin/env bash
 
-QUAY_ROBOT_ACCOUNT=exporter
 ORG=pfda2dockstore
 APP=bai
 
 docker login
 
-function prompt() {
+prompt() {
     echo -n "$1: " && read $2 $1 && echo
 }
 
+echo "Please enter your application name from precisionFDA"
 prompt "APP"
+echo "Please enter your github org"
 prompt "ORG"
-prompt "PFDA_TOKEN" -s
-prompt "GITHUB_TOKEN" -s
+echo "Please enter your PFDA token"
+prompt "PFDA_TOKEN"
+echo "Please enter your github token"
+prompt "GITHUB_TOKEN"
 
 python3 pfda2dockstore \
   --app-name $APP \
