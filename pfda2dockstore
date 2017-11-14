@@ -15,9 +15,10 @@ def main():
     parser.add_argument('-v', '--verbose', action='store_true', help='verbose log to standard error')
     parser.add_argument('--github-token', dest='gh_token', help='your github token')
     parser.add_argument('--github-org', dest='gh_org', help='the github organization to make repositories in')
-    parser.add_argument('--quay-token', dest='q_token', help='your Quay.io token')
-    parser.add_argument('--quay-org', dest='q_org', help='the Quay.io organization to make repositories in')
-    parser.add_argument('--quay-account', dest='q_account', help='the Quay.io account (eg. robot account) to make repositories in')
+    # TODO: quay is not being used
+    parser.add_argument('--dockerhub-org', dest='d_org', help='the Quay.io organization to make repositories in')
+    #parser.add_argument('--quay-token', dest='q_token', help='your Quay.io token')
+    #parser.add_argument('--quay-account', dest='q_account', help='the Quay.io account (eg. robot account) to make repositories in')
     parser.add_argument('--dockstore-org', dest='ds_org', help='The Dockstore organization to make repositories in')
     parser.add_argument('--dockstore-token', dest='ds_token', help='Your Dockstore token')
 
@@ -42,9 +43,9 @@ def main():
     app_version = app["revision"]
     # the docker path on quay
     # docker_tag = "quay.io/" + args.q_org + "/" + args.app_name + ":" + str(app_version)
-    docker_tag = args.q_org + "/" + args.app_name + ":" + str(app_version)
+    docker_tag = args.d_org + "/" + args.app_name + ":" + str(app_version)
 
-    # Add org and user (need a separate "describe" call to get authorship) Example: 
+    # Add org and user (need a separate "describe" call to get authorship) Example:
     # app_desc["org"]: {'handle': 'bestgenetics', 'name': 'Best Genetics, Inc.'}
     # app_desc["user"]: {'dxuser': 'jdoe', 'full_name': 'John Doe'}
     app_desc = describe_app(args.pfda_token, app)
@@ -67,7 +68,7 @@ def main():
 
     # TODO: replace this with the code from Ola and Geet that pushes to Quay.io
     #print("Pushing {} to quay.io".format(docker_tag))
-    docker_push(docker_tag, "quay.io", args.q_org, args.q_account, args.q_token)
+    docker_push(docker_tag, "quay.io", args.d_org, args.q_account, args.q_token)
 
     # TODO: this needs to still be done, see the google doc for endpoint swagger link
     #register_on_dockstore(args.app_name, args.ds_org, args.ds_token)

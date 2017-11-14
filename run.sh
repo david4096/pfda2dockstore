@@ -20,8 +20,4 @@ python3 pfda2dockstore \
   --pfda-token $PFDA_TOKEN \
   --github-org $ORG \
   --github-token $GITHUB_TOKEN \
-  --quay-org $ORG \
-  #--quay-account $QUAY_ROBOT_ACCOUNT \
-  #--quay-token $QUAY_TOKEN
-  --quay-token depracated
-  --quay-account depracated \
+  --dockerhub-org $ORG
