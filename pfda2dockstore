@@ -56,6 +56,14 @@ def main():
     cwl = pfda_app_to_cwl(app, docker_tag)
     with open("/tmp/Dockstore.cwl", 'w') as outfile:
         print(yaml.dump(cwl), file=outfile)
+
+    with open("/tmp/Dockstore.cwl", 'a') as outfile:
+        dublin_content = """
+#dct:creator:
+#  '@id': PrecisionFDA
+#  foaf:name: {author}
+""".format(author=app["user"])
+        print(dublin_content, file=outfile)
     # make the Dockerfile
     dockerfile = pfda_export_app_dockerfile(args.pfda_token, app["uid"])
     dockerfile = dockerfile + "\nVOLUME /data\nVOLUME /work" # https://github.com/common-workflow-language/cwltool/issues/30
@@ -237,6 +245,10 @@ def pfda_app_to_cwl(app, docker_pull):
             raise Exception("Unsupported output type: {} {}".format(outp["class"], outp["name"]))
         outputs[outp["name"]] = cwl_outp
     cwl["outputs"] = outputs
+    cwl["doc"] = """ |
+   {}
+""".format(app["name"])
+
 
     return cwl
 
