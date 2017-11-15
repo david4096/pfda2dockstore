@@ -17,6 +17,8 @@ echo "Please enter your PFDA token"
 prompt "PFDA_TOKEN"
 echo "Please enter your github token"
 prompt "GITHUB_TOKEN"
+echo "Please enter your Dockstore token"
+prompt "DS_TOKEN"
 
 python3 pfda2dockstore \
   --app-name $APP \
@@ -24,3 +26,4 @@ python3 pfda2dockstore \
   --github-org $ORG \
   --github-token $GITHUB_TOKEN \
   --dockerhub-org $ORG
+  --dockstore-token $DS_TOKEN

@@ -6,8 +6,13 @@ This application takes apps by name from your Precision FDA account and makes th
 creating a Github repo, CWL workflow, and Docker image and activates it on Docker hub. This then
 makes the workflow available to Dockstore, which manages workflows using the GA4GH Task Registry API.
 
-
 ## Using the script
+
+Get these details together before you run the script.
+
+* PFDA_TOKEN (your PrecisionFDA token)
+* GITHUB_TOKEN
+* DS_TOKEN (your Dockstore token)
 
 For example, to export [vcf-comparison](https://precision.fda.gov/apps/app-BqB9XZ8006ZZ2g5KzGXP3fpq) and save it in Github at [pfda2dockstore](https://github.com/pfda2dockstore) and DockerHub organization [pfda2dockstore](https://hub.docker.com/u/pfda2dockstore):
 
