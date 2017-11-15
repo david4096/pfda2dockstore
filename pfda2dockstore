@@ -117,7 +117,7 @@ def setup_github_repo_and_tags(token, org, tool, app_version, cwl_file, dockerfi
                                 homepage="https://github.com", private=False,
                                 has_issues=False, has_wiki=False, has_downloads=False )
         # create files in repo
-        file_hash = {"dockstore.cwl": cwl_file, "Dockerfile": dockerfile}
+        file_hash = {"Dockstore.cwl": cwl_file, "Dockerfile": dockerfile}
         for key in file_hash:
             data = file_hash[key]
             file_path = '/'+ key
