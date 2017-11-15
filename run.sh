@@ -25,5 +25,5 @@ python3 pfda2dockstore \
   --pfda-token $PFDA_TOKEN \
   --github-org $ORG \
   --github-token $GITHUB_TOKEN \
-  --dockerhub-org $ORG
+  --dockerhub-org $ORG \
   --dockstore-token $DS_TOKEN
